@@ -4,16 +4,13 @@ Unified Python SDK for Rocket League: save file data extraction, Stats API WebSo
 
 Built because EAC made traditional plugin development for online matches harder. Intended for streamers, tool developers, and anyone who wants RL data in Python.
 ```bash
-# Local install (dev):
-pip install ./nixwrap/
-# or editable:
-pip install -e ./nixwrap/
+pip install git+https://github.com/nixvio64/nixwrap
 
 # With optional extras:
-pip install "./nixwrap/[tracker]"   # tracker.gg
-pip install "./nixwrap/[gui]"       # overlay / GUI
-pip install "./nixwrap/[input]"     # keyboard + controller
-pip install "./nixwrap/[all]"       # everything
+pip install "nixwrap[tracker] @ git+https://github.com/nixvio64/nixwrap"   # tracker.gg
+pip install "nixwrap[gui] @ git+https://github.com/nixvio64/nixwrap"       # overlay / GUI
+pip install "nixwrap[input] @ git+https://github.com/nixvio64/nixwrap"     # keyboard + controller
+pip install "nixwrap[all] @ git+https://github.com/nixvio64/nixwrap"      # everything
 
 ```
 
