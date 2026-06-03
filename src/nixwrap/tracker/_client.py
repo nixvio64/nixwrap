@@ -62,7 +62,7 @@ class TrackerClient:
         except ImportError:
             _log.warning(
                 "curl_cffi not installed: tracker.gg requests may be "
-                "blocked by anti-bot detection.  Install with: "
+                "blocked.  Install with: "
                 "pip install curl-cffi"
             )
 
