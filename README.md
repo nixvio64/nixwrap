@@ -2,6 +2,7 @@
 
 Unified Python SDK for Rocket League: save file data extraction, Stats API WebSocket client, tracker.gg stats, process detection, keyboard/controller input, and a reusable GUI/overlay toolkit.
 
+Built because EAC made traditional plugin development for online matches harder. Intended for streamers, tool developers, and anyone who wants RL data in Python.
 ```bash
 # Local install (dev):
 pip install ./nixwrap/
