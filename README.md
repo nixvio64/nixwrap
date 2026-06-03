@@ -33,7 +33,7 @@ pip install "./nixwrap/[all]"       # everything
 
 ## Quick Start
 
-## 0. Edit your DefaultStatsAPI.ini
+### 0. Edit your DefaultStatsAPI.ini
 
 Found at ```<RL Install Dir>\TAGame\Config\DefaultStatsAPI.ini``` set PacketSendRate value to something like 20 (1-120).
 
