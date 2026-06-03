@@ -218,7 +218,7 @@ app.exec()
 
 | Extra | Packages | What you get |
 |-------|----------|-------------|
-| `[tracker]` | `curl-cffi` | - |
+| `[tracker]` | `curl-cffi` | better tracker.gg support |
 | `[gui]` | `PySide6` | Overlay windows, painter, colors, fonts, animations |
 | `[input]` | `dualsense-controller`, `keyboard`, bundled `hidapi.dll` | Xbox (XInput), PS5 DualSense, keyboard hotkey detection |
 | `[all]` | all of the above | Everything |
