@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nixwrap"
+name = "nixwrap-rl"
 version = "0.1.0"
 description = "Unified SDK for Rocket League save file data extraction, Stats API WebSocket client, tracker.gg stats, process detection, input (keyboard/controller), and GUI overlay toolkit."
 readme = "README.md"
