@@ -241,3 +241,6 @@ app.exec()
 - [RocketRP](https://github.com/Drogebot/RocketRP): AES key and binary format research
 - [tracker.gg](https://tracker.gg/): player stats API
 - Rocket League Stats API: [Psyonix/Epic](https://www.rocketleague.com/en/developer/stats-api)
+
+## Contributing
+Do you want to make this library even better? Contributions are highly encouraged and appreciated.
