@@ -9,7 +9,7 @@ pip install ./nixwrap/
 pip install -e ./nixwrap/
 
 # With optional extras:
-pip install "./nixwrap/[tracker]"   # tracker.gg anti-bot
+pip install "./nixwrap/[tracker]"   # tracker.gg
 pip install "./nixwrap/[gui]"       # overlay / GUI
 pip install "./nixwrap/[input]"     # keyboard + controller
 pip install "./nixwrap/[all]"       # everything
@@ -218,7 +218,7 @@ app.exec()
 
 | Extra | Packages | What you get |
 |-------|----------|-------------|
-| `[tracker]` | `curl-cffi` | Browser impersonation for tracker.gg anti-bot |
+| `[tracker]` | `curl-cffi` | - |
 | `[gui]` | `PySide6` | Overlay windows, painter, colors, fonts, animations |
 | `[input]` | `dualsense-controller`, `keyboard`, bundled `hidapi.dll` | Xbox (XInput), PS5 DualSense, keyboard hotkey detection |
 | `[all]` | all of the above | Everything |
