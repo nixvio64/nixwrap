@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nixwrap"
+version = "0.1.0"
+description = "Unified SDK for Rocket League save file data extraction, Stats API WebSocket client, tracker.gg stats, process detection, input (keyboard/controller), and GUI overlay toolkit."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "nixvio64"}]
+keywords = ["rocket-league", "save-file", "stats-api", "overlay", "tracker", "bakkesmod"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Games/Entertainment",
+]
+
+dependencies = [
+    "pycryptodome>=3.18",
+    "psutil>=5.9",
+]
+
+[project.optional-dependencies]
+tracker = [
+    "curl-cffi>=0.6",
+]
+gui = [
+    "PySide6>=6.5",
+]
+input = [
+    "dualsense-controller>=0.3",
+    "keyboard>=0.13",
+]
+all = [
+    "nixwrap[tracker,gui,input]",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+nixwrap = ["py.typed"]
+"nixwrap.input" = ["hidapi.dll"]
