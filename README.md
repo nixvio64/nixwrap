@@ -237,6 +237,5 @@ app.exec()
 ## Acknowledgements
 
 - [RocketRP](https://github.com/Drogebot/RocketRP): AES key and binary format research
-- [InGameRank](https://github.com/nixvio64/InGameRank): overlay and input design, hidapi.dll
 - [tracker.gg](https://tracker.gg/): player stats API
-- Rocket League Stats API: Psyonix/Epic
+- Rocket League Stats API: [Psyonix/Epic](https://www.rocketleague.com/en/developer/stats-api)
