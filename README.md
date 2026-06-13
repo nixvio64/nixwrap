@@ -1,6 +1,6 @@
 # Nixwrap
 
-Unified Python SDK for Rocket League: save file data extraction, Stats API WebSocket client, tracker.gg stats, process detection, keyboard/controller input, and a reusable GUI/overlay toolkit.
+Unified Python SDK for Rocket League: save file data extraction, Stats API WebSocket client, tracker.gg stats, process detection, keyboard/controller input, RL log filem and a reusable GUI/overlay toolkit.
 
 Built because EAC made traditional plugin development for online matches harder. Intended for streamers, tool developers, and anyone who wants RL data in Python.
 
@@ -41,7 +41,8 @@ pip install nixwrap-rl[all]       # everything
 | `nixwrap.tracker` | tracker.gg player rank/stats | `curl-cffi` (optional) |
 | `nixwrap.input` | Keyboard, Xbox, DualSense hotkey detection | `dualsense-controller`, `keyboard` (optional) |
 | `nixwrap.gui` | Overlay/GUI toolkit | `PySide6` (optional) |
-| `nixwrap.utils` | Constants and helpers | - |
+| `nixwrap.log` | Launch.log parser (session + match info) | - |
+| `nixwrap.utils` | Constants, rank helpers, PsyNet config API | - |
 
 ---
 
@@ -93,6 +94,10 @@ print(save.sound.master_volume)
 # Quick chats, loadout sets, season, achievements, etc.
 print(len(save.quick_chats), "quick chat bindings")
 print(len(save.loadout_sets), "loadout presets")
+
+raw = load_raw("path/to/savefile.save")
+# raw["header"], raw["properties"], raw["objects"]
+
 ```
 
 ### 2. Process Detection
@@ -230,6 +235,52 @@ app = QApplication([])
 overlay = MyOverlay()
 app.exec()
 ```
+
+### 7. Launch.log Parser
+
+```python
+from nixwrap.log import parse_log
+
+info = parse_log()
+
+print(info.session.username)
+print(info.session.rich_presence)
+
+if info.game:
+    print(info.game.playlist_id)
+    print(info.game.playlist_name)
+    print(info.game.game_class)
+    print(info.game.map_name)
+    print(info.game.server_ip, info.game.server_port)
+    print(info.game.region)
+
+info = parse_log(verify=False)  # skip Stats API check, return whatever the log has
+
+# verify=True (default) checks the Stats API before returning game data
+# so you don't get stale playlist/map info from a previous session.
+```
+
+### 8. PsyNet Config API
+
+```python
+from nixwrap.utils import (
+    fetch_psynet_config, get_online_playlists,
+    get_maps_for_playlist, get_special_events,
+)
+
+config = fetch_psynet_config(939334844)
+
+playlists = get_online_playlists(config)
+print(playlists[11])   # Doubles
+print(playlists[27])   # Hoops
+
+maps = get_maps_for_playlist(config, 11)
+print(len(maps))        # number of maps in rotation
+
+for e in get_special_events(config):
+    print(e["Title"])
+```
+
 
 ---
 

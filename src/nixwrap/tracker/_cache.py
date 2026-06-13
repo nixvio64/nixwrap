@@ -26,7 +26,7 @@ class TTLCache:
 
     def __init__(self, ttl: float = DEFAULT_TTL) -> None:
         self._ttl = ttl
-        self._data: dict[str, tuple[float, Any]] = {}
+        self._data: dict[str, tuple[float, float, Any]] = {}
         self._lock = threading.Lock()
 
     def get(self, key: str) -> Any | None:
@@ -37,16 +37,23 @@ class TTLCache:
             entry = self._data.get(key)
             if entry is None:
                 return None
-            timestamp, value = entry
-            if time.time() - timestamp > self._ttl:
+            timestamp, entry_ttl, value = entry
+            if time.time() - timestamp > entry_ttl:
                 del self._data[key]
                 return None
             return value
 
-    def set(self, key: str, value: Any) -> None:
-        """Store value in the cache with the current timestamp."""
+    def set(self, key: str, value: Any, ttl: float | None = None) -> None:
+        """Store value in the cache with the current timestamp.
+
+        Parameters
+        ----------
+        ttl:
+            Per-entry TTL override.  Uses the cache-wide default when
+            ``None``.
+        """
         with self._lock:
-            self._data[key] = (time.time(), value)
+            self._data[key] = (time.time(), ttl if ttl is not None else self._ttl, value)
 
     def invalidate(self, key: str) -> None:
         """Remove a specific key from the cache."""
@@ -64,8 +71,8 @@ class TTLCache:
         removed = 0
         with self._lock:
             stale = [
-                k for k, (ts, _) in self._data.items()
-                if now - ts > self._ttl
+                k for k, (ts, entry_ttl, _) in self._data.items()
+                if now - ts > entry_ttl
             ]
             for k in stale:
                 del self._data[k]

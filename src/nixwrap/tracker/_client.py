@@ -111,8 +111,8 @@ class TrackerClient:
 
         try:
             data = self._request(slug, target_user)
-            stats = _parse_response(data, primary_id, display_name, platform)
-            self._cache.set(primary_id, stats)
+            stats, expiry_ttl = _parse_response(data, primary_id, display_name, platform)
+            self._cache.set(primary_id, stats, ttl=expiry_ttl)
             return stats
         except Exception as exc:
             err_msg = str(exc)
@@ -199,8 +199,18 @@ def _parse_response(
     primary_id: str,
     display_name: str,
     platform: str,
-) -> PlayerStats:
+) -> tuple[PlayerStats, float | None]:
+    """Parse the tracker.gg API response.
+
+    Returns
+    -------
+    (stats, expiry_ttl)
+        *stats* is the parsed PlayerStats.
+        *expiry_ttl* is the cache TTL derived from the API's ``expiryDate``
+        field, or ``None`` to use the default.
+    """
     inner = data.get("data", {})
+    expiry_ttl = _parse_expiry_ttl(inner.get("expiryDate", ""))
 
     # Platform info
     pinfo = inner.get("platformInfo", {})
@@ -244,7 +254,7 @@ def _parse_response(
             if pid in ranks:
                 _merge_peak(ranks[pid], seg)
 
-    return PlayerStats(
+    stats = PlayerStats(
         primary_id=primary_id,
         display_name=display_name,
         platform=platform,
@@ -258,6 +268,7 @@ def _parse_response(
         current_season=current_season,
         fetched_at=time.time(),
     )
+    return stats, expiry_ttl
 
 
 def _parse_playlist(pid: int, seg: dict) -> PlaylistRank:
@@ -354,6 +365,31 @@ def _tier_name_to_id(name: str) -> int:
         return RANK_TIERS.index(name)
     except ValueError:
         return 0
+
+
+def _parse_expiry_ttl(expiry_str: str) -> float | None:
+    """Parse the API's ``expiryDate`` into a cache TTL in seconds.
+
+    ``"2026-06-13T17:16:06.3421324+00:00"`` → seconds until that moment.
+
+    Returns ``None`` if the string is missing, unparseable, or already
+    in the past.
+    """
+    if not expiry_str:
+        return None
+    try:
+        dt = __import__('datetime').datetime.fromisoformat(
+            expiry_str.replace('Z', '+00:00')
+        )
+        now = __import__('datetime').datetime.now(
+            __import__('datetime').timezone.utc
+        )
+        delta = (dt - now).total_seconds()
+        if delta <= 0:
+            return None  # already expired; use default
+        return delta
+    except Exception:
+        return None
 
 
 def _safe_int(stats: dict, key: str) -> int:
